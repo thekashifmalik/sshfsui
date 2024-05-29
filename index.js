@@ -38,10 +38,16 @@ function createTray(file) {
     const icon = nativeImage.createFromPath(file);
     const tray = new Tray(icon);
     const contextMenu = Menu.buildFromTemplate([
-        { label: 'Item1', type: 'radio' },
-        { label: 'Item2', type: 'radio' },
+        { label: 'SSHFS UI', type: 'normal' },
+        { type: 'separator' },
+        { label: 'nas-1', submenu: [
+            { label: 'Disconnect', type: 'normal' },
+        ]},
+        // { label: 'Item2', type: 'submenu' },
         { label: 'Item3', type: 'radio', checked: true },
-        { label: 'Item4', type: 'radio' }
+        { label: 'Item4', type: 'checkbox' },
+        { type: 'separator' },
+        { label: 'Quit', type: 'normal', click: app.quit},
     ]);
     tray.setContextMenu(contextMenu);
 }
