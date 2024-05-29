@@ -3,10 +3,14 @@
   "version": "0.1.0",
   "main": "index.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "test": "node *.test.js"
   },
   "license": "MIT",
   "devDependencies": {
     "electron": "^30.0.3"
+  },
+  "dependencies": {
+    "command-exists": "^1.2.9"
   }
 }
