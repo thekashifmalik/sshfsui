@@ -1,5 +1,5 @@
-const test = require('node:test');
-const assert = require('assert');
+import test from 'node:test';
+import assert from 'assert';
 
 test('synchronous passing test', (t) => {
     // This test passes because it does not throw an exception.
