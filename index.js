@@ -1,6 +1,17 @@
 
-const { app, Tray, Menu, nativeImage } = require('electron')
-const fs = require('fs');
+import fs from 'fs';
+import os from 'os';
+
+import { app, Tray, Menu, nativeImage, BrowserWindow } from 'electron'
+
+import { dependenciesInstalled } from './dependencies.js';
+
+
+if (!dependenciesInstalled()) {
+    app.whenReady().then(() => {
+        createWindow('error.html')
+    });
+}
 
 let tray
 
@@ -21,7 +32,7 @@ function createTray() {
     tray.setTitle('This is my title')
 }
 
-const homedir = require('os').homedir();
+const homedir = os.homedir();
 const configDir = homedir + '/.sshfsui'
 
 function fetchOrCreateConfig() {
@@ -49,18 +60,11 @@ fetchOrCreateConfig();
 
 app.whenReady().then(createTray)
 
+function createWindow(file) {
+    const win = new BrowserWindow({
+        width: 640,
+        height: 360,
+    })
 
-// const { app, BrowserWindow } = require('electron')
-
-// const createWindow = () => {
-//     const win = new BrowserWindow({
-//         width: 800,
-//         height: 600
-//     })
-
-//     win.loadFile('index.html')
-// }
-
-// app.whenReady().then(() => {
-//     createWindow()
-// })
+    win.loadFile(file)
+}
