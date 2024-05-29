@@ -20,44 +20,31 @@ function main() {
         createWindow('error-sshfs.html');
         return;
     }
-    return;
+    createTray('icon.png');
 }
-
-
-// let tray
-
-// function createTray() {
-//     const icon = nativeImage.createFromPath('icon.png')
-//     tray = new Tray(icon)
-
-//     const contextMenu = Menu.buildFromTemplate([
-//         { label: 'Item1', type: 'radio' },
-//         { label: 'Item2', type: 'radio' },
-//         { label: 'Item3', type: 'radio', checked: true },
-//         { label: 'Item4', type: 'radio' }
-//     ])
-
-//     tray.setContextMenu(contextMenu)
-
-//     tray.setToolTip('This is my application')
-//     tray.setTitle('This is my title')
-// }
-
-// fetchOrCreateConfig();
-
-// app.whenReady().then(createTray)
 
 function createWindow(file) {
     const win = new BrowserWindow({
         width: 640,
         height: 360,
         resizable: false,
-    })
+    });
     win.removeMenu();
     win.webContents.setWindowOpenHandler(openExternalAndDeny);
-    win.loadFile(file)
+    win.loadFile(file);
 }
 
+function createTray(file) {
+    const icon = nativeImage.createFromPath(file);
+    const tray = new Tray(icon);
+    const contextMenu = Menu.buildFromTemplate([
+        { label: 'Item1', type: 'radio' },
+        { label: 'Item2', type: 'radio' },
+        { label: 'Item3', type: 'radio', checked: true },
+        { label: 'Item4', type: 'radio' }
+    ]);
+    tray.setContextMenu(contextMenu);
+}
 
 function openExternalAndDeny({ url }) {
     shell.openExternal(url);
