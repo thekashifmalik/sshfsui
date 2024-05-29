@@ -2,69 +2,64 @@
 import fs from 'fs';
 import os from 'os';
 
-import { app, Tray, Menu, nativeImage, BrowserWindow } from 'electron'
+import { app, Tray, Menu, nativeImage, BrowserWindow, shell } from 'electron'
+import { sync as commandExists } from 'command-exists';
 
-import { dependenciesInstalled } from './dependencies.js';
+// import { fetchOrCreateConfig } from './config.js';
 
 
-if (!dependenciesInstalled()) {
-    app.whenReady().then(() => {
-        createWindow('error.html')
-    });
-}
+app.whenReady().then(main);
 
-let tray
 
-function createTray() {
-    const icon = nativeImage.createFromPath('icon.png')
-    tray = new Tray(icon)
-
-    const contextMenu = Menu.buildFromTemplate([
-        { label: 'Item1', type: 'radio' },
-        { label: 'Item2', type: 'radio' },
-        { label: 'Item3', type: 'radio', checked: true },
-        { label: 'Item4', type: 'radio' }
-    ])
-
-    tray.setContextMenu(contextMenu)
-
-    tray.setToolTip('This is my application')
-    tray.setTitle('This is my title')
-}
-
-const homedir = os.homedir();
-const configDir = homedir + '/.sshfsui'
-
-function fetchOrCreateConfig() {
-    try {
-        fetchConfig()
-    } catch (error) {
-        createConfig()
+function main() {
+    if (!commandExists('ssh')) {
+        createWindow('error-ssh.html');
+        return;
     }
-}
-
-function fetchConfig() {
-    const targets = fs.readdirSync(configDir, { withFileTypes: true })
-        .filter(item => !item.isDirectory())
-        .map(item => item.name);
-    console.log(`found targets: ${targets}`)
-}
-
-function createConfig() {
-    fs.mkdirSync(configDir)
-    console.log(`created ${configDir}`)
+    if (!commandExists('sshfs')) {
+        createWindow('error-sshfs.html');
+        return;
+    }
+    return;
 }
 
 
-fetchOrCreateConfig();
+// let tray
 
-app.whenReady().then(createTray)
+// function createTray() {
+//     const icon = nativeImage.createFromPath('icon.png')
+//     tray = new Tray(icon)
+
+//     const contextMenu = Menu.buildFromTemplate([
+//         { label: 'Item1', type: 'radio' },
+//         { label: 'Item2', type: 'radio' },
+//         { label: 'Item3', type: 'radio', checked: true },
+//         { label: 'Item4', type: 'radio' }
+//     ])
+
+//     tray.setContextMenu(contextMenu)
+
+//     tray.setToolTip('This is my application')
+//     tray.setTitle('This is my title')
+// }
+
+// fetchOrCreateConfig();
+
+// app.whenReady().then(createTray)
 
 function createWindow(file) {
     const win = new BrowserWindow({
         width: 640,
         height: 360,
+        resizable: false,
     })
-
+    win.removeMenu();
+    win.webContents.setWindowOpenHandler(openExternalAndDeny);
     win.loadFile(file)
+}
+
+
+function openExternalAndDeny({ url }) {
+    shell.openExternal(url);
+    return { action: 'deny' };
 }
