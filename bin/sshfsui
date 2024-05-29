@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-CONFIG_DIR=$HOME/.sshfsui
-
-if [[ -e $CONFIG_DIR ]]; then
-    echo "found targets: `ls $CONFIG_DIR`"
-else
-    mkdir -v $CONFIG_DIR
-fi
