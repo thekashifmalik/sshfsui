@@ -14,8 +14,9 @@ class Target {
 
     status() {
         const output = child_process.execSync('mount').toString();
-        const found = output.indexOf(this.mount);
-        return found !== -1;
+        const foundURL = output.indexOf(this.url) !== -1;
+        const foundMount = output.indexOf(this.mount) !== -1;
+        return foundURL || foundMount;
     }
     connect() {
         child_process.execSync(`sshfs ${this.url} ${this.mount}`);
