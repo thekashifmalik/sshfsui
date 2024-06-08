@@ -48,22 +48,21 @@ function createTray(targets) {
     for (const target of targets) {
         items.push({
             label: target.name,
-            icon: target.status() ? iconConnected : iconDisconnected,
-            click: () => {
-                target.status() ? target.disconnect() : target.connect();
-                createTray(targets);
-                tray.destroy();
-            },
-            // submenu: [
-            //     {
-            //         label: target.status() ? 'Disconnect' : 'Connect',
-            //         click: () => {
-            //             target.status() ? target.disconnect() : target.connect();
-            //             createTray(targets);
-            //             tray.destroy();
-            //         },
-            //     },
-            // ],
+            submenu: [
+                {
+                    icon: target.status() ? iconConnected : iconDisconnected,
+                    label: 'Status',
+                    enabled: false,
+                },
+                {
+                    label: target.status() ? 'Disconnect' : 'Connect',
+                    click: () => {
+                        target.status() ? target.disconnect() : target.connect();
+                        createTray(targets);
+                        tray.destroy();
+                    },
+                },
+            ],
         })
     }
 
