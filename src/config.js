@@ -14,8 +14,7 @@ class Target {
 
     status() {
         const output = child_process.execSync('mount').toString();
-        const found = output.indexOf('on ' + this.mount);
-        console.log(output);
+        const found = output.indexOf(this.mount);
         return found !== -1;
     }
     connect() {
