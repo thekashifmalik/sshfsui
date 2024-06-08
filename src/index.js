@@ -2,10 +2,10 @@
 import fs from 'fs';
 import os from 'os';
 
-import { app, Tray, Menu, nativeImage, BrowserWindow, shell } from 'electron'
+import { app, Tray, Menu, nativeImage, BrowserWindow, shell, ipcMain } from 'electron'
 import { sync as commandExists } from 'command-exists';
 
-// import { fetchOrCreateConfig } from './config.js';
+import * as config from './config.js';
 
 
 app.whenReady().then(main);
@@ -20,7 +20,8 @@ function main() {
         createWindow('error-sshfs.html');
         return;
     }
-    createTray('icon.png');
+    const targets = config.fetchOrCreateEmptyConfig();
+    createTray(targets);
 }
 
 function createWindow(file) {
@@ -34,21 +35,45 @@ function createWindow(file) {
     win.loadFile(file);
 }
 
-function createTray(file) {
-    const icon = nativeImage.createFromPath(file);
+function createTray(targets) {
+    const icon = nativeImage.createFromPath('assets/tray.png');
+    const iconDisconnected = nativeImage.createFromPath('assets/disconnected.png');
+    const iconConnected = nativeImage.createFromPath('assets/connected.png');
     const tray = new Tray(icon);
-    const contextMenu = Menu.buildFromTemplate([
-        { label: 'SSHFS UI', type: 'normal' },
+
+    var items = [
+        { label: 'SSHFS UI', enabled: false },
         { type: 'separator' },
-        { label: 'nas-1', submenu: [
-            { label: 'Disconnect', type: 'normal' },
-        ]},
-        // { label: 'Item2', type: 'submenu' },
+    ];
+    for (const target of targets) {
+        items.push({
+            label: target.name,
+            icon: target.status() ? iconConnected : iconDisconnected,
+            click: () => {
+                target.status() ? target.disconnect() : target.connect();
+                createTray(targets);
+                tray.destroy();
+            },
+            // submenu: [
+            //     {
+            //         label: target.status() ? 'Disconnect' : 'Connect',
+            //         click: () => {
+            //             target.status() ? target.disconnect() : target.connect();
+            //             createTray(targets);
+            //             tray.destroy();
+            //         },
+            //     },
+            // ],
+        })
+    }
+
+    items = items.concat([
         { label: 'Item3', type: 'radio', checked: true },
         { label: 'Item4', type: 'checkbox' },
         { type: 'separator' },
-        { label: 'Quit', type: 'normal', click: app.quit},
-    ]);
+        { label: 'Quit', type: 'normal', click: app.quit },
+    ])
+    const contextMenu = Menu.buildFromTemplate(items);
     tray.setContextMenu(contextMenu);
 }
 
