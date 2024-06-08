@@ -67,8 +67,6 @@ function createTray(targets) {
     }
 
     items = items.concat([
-        { label: 'Item3', type: 'radio', checked: true },
-        { label: 'Item4', type: 'checkbox' },
         { type: 'separator' },
         { label: 'Quit', type: 'normal', click: app.quit },
     ])
