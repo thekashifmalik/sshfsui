@@ -13,15 +13,10 @@ class Target {
     }
 
     status() {
-        try {
-            child_process.execSync('mountpoint ' + this.mount);
-            return true;
-        } catch (error) {
-            if (error.status === 32) {
-                return false;
-            }
-            throw error;
-        }
+        const output = child_process.execSync('mount').toString();
+        const found = output.indexOf('on ' + this.mount);
+        console.log(output);
+        return found !== -1;
     }
     connect() {
         child_process.execSync(`sshfs ${this.url} ${this.mount}`);
