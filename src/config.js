@@ -1,6 +1,8 @@
 import os from "os";
 import fs from "fs";
 import * as child_process from "child_process";
+import path from "path";
+import untildify from "untildify";
 
 const configDir = os.homedir() + '/.sshfsui'
 
@@ -19,6 +21,10 @@ class Target {
         return foundURL || foundMount;
     }
     connect() {
+        const absolutePath = untildify(this.mount);
+        if (!fs.existsSync(absolutePath)) {
+            fs.mkdirSync(absolutePath);
+        }
         child_process.execSync(`sshfs ${this.url} ${this.mount}`);
     }
     disconnect() {
@@ -42,7 +48,6 @@ function fetchConfig() {
     const targetNames = fs.readdirSync(configDir, { withFileTypes: true })
         .filter(item => item.isDirectory())
         .map(item => item.name);
-    console.log(`found targets: ${targetNames}`);
     for (const name of targetNames) {
         const base = configDir + '/' + name + '/';
         const targetURL = fs.readFileSync(base + "target", { encoding: 'utf8' }).trim();
@@ -55,5 +60,18 @@ function fetchConfig() {
 
 function createEmptyConfig() {
     fs.mkdirSync(configDir);
-    console.log(`created ${configDir}`);
+}
+
+
+export function addTarget(name, url, mount) {
+    const targetBase = configDir + '/' + name;
+    fs.mkdirSync(targetBase);
+    fs.writeFileSync(targetBase + "/target", url, { encoding: 'utf8' });
+    fs.writeFileSync(targetBase + "/mount", mount, { encoding: 'utf8' });
+}
+
+
+export function deleteTarget(name) {
+    const target = configDir + '/' + name;
+    fs.rmSync(target, {recursive: true});
 }

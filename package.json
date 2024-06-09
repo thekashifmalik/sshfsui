@@ -12,6 +12,7 @@
     "electron": "^30.0.3"
   },
   "dependencies": {
-    "command-exists": "^1.2.9"
+    "command-exists": "^1.2.9",
+    "untildify": "^5.0.0"
   }
 }
