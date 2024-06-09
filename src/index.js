@@ -2,7 +2,7 @@
 import * as path from 'path';
 
 import { app, Tray, Menu, nativeImage, BrowserWindow, shell, ipcMain } from 'electron'
-import { sync as commandExists } from 'command-exists';
+import * as commandExists from 'command-exists';
 
 import * as config from './config.js';
 
@@ -14,11 +14,11 @@ const preloadPath = path.join(__dirname, 'preload.js');
 
 
 function main() {
-    if (!commandExists('ssh')) {
+    if (!commandExists.sync('ssh')) {
         createWindow('error-ssh.html');
         return;
     }
-    if (!commandExists('sshfs')) {
+    if (!commandExists.sync('sshfs')) {
         createWindow('error-sshfs.html');
         return;
     }
