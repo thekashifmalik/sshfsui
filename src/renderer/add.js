@@ -1,14 +1,14 @@
-const submit = document.querySelector("#add");
-console.log(submit);
-submit.addEventListener('submit', (event) => {
+const form = document.querySelector("#add");
+form.addEventListener('submit', sendAddDataAndCloseWindow);
+
+function sendAddDataAndCloseWindow(event) {
     event.preventDefault();
     const data = {
-        name: submit.querySelector('input[name="name"]').value,
-        url: submit.querySelector('input[name="url"]').value,
-        mount: submit.querySelector('input[name="mount"]').value,
+        name: form.querySelector('input[name="name"]').value,
+        url: form.querySelector('input[name="url"]').value,
+        mount: form.querySelector('input[name="mount"]').value,
     };
-    console.log(data);
     window.electronAPI.sendAdd(data);
     window.close();
     return false;
-})
+}
