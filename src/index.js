@@ -1,25 +1,23 @@
 
 import * as path from 'path';
 
-import { app, Tray, Menu, nativeImage, BrowserWindow, shell, ipcMain } from 'electron'
+import { app, Tray, Menu, nativeImage, ipcMain } from 'electron'
 import * as commandExists from 'command-exists';
 
 import * as config from './config.js';
+import * as window from './window.js';
 
 
 app.whenReady().then(main);
 
-const __dirname = import.meta.dirname;
-const preloadPath = path.join(__dirname, 'preload.js');
-
 
 function main() {
     if (!commandExists.sync('ssh')) {
-        createWindow('error-ssh.html');
+        window.create('error-ssh.html', 640, 360);
         return;
     }
     if (!commandExists.sync('sshfs')) {
-        createWindow('error-sshfs.html');
+        window.create('error-sshfs.html', 640, 360);
         return;
     }
     const targets = config.fetchOrCreateEmptyConfig();
@@ -30,20 +28,6 @@ function main() {
     app.on('window-all-closed', () => {
         createTray(config.fetchOrCreateEmptyConfig());
     });
-}
-
-function createWindow(file) {
-    const win = new BrowserWindow({
-        width: 640,
-        height: 360,
-        webPreferences: {
-            preload: preloadPath,
-        },
-        resizable: false,
-    });
-    win.removeMenu();
-    win.webContents.setWindowOpenHandler(openExternalAndDeny);
-    win.loadFile(file);
 }
 
 function createTray(targets) {
@@ -90,7 +74,7 @@ function createTray(targets) {
         {
             label: 'Add',
             click: () => {
-                createWindow('renderer/add.html');
+                window.create('renderer/add.html', 360, 240);
                 tray.destroy();
             },
         },
@@ -98,9 +82,4 @@ function createTray(targets) {
     ])
     const contextMenu = Menu.buildFromTemplate(items);
     tray.setContextMenu(contextMenu);
-}
-
-function openExternalAndDeny({ url }) {
-    shell.openExternal(url);
-    return { action: 'deny' };
 }
