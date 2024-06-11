@@ -13,11 +13,11 @@ app.whenReady().then(main);
 
 function main() {
     if (!commandExists.sync('ssh')) {
-        window.create('error-ssh.html', 640, 360);
+        window.create('src/error-ssh.html', 640, 360);
         return;
     }
     if (!commandExists.sync('sshfs')) {
-        window.create('error-sshfs.html', 640, 360);
+        window.create('src/error-sshfs.html', 640, 360);
         return;
     }
     const targets = config.fetchOrCreateEmptyConfig();
@@ -74,7 +74,7 @@ function createTray(targets) {
         {
             label: 'Add',
             click: () => {
-                window.create('renderer/add.html', 360, 240);
+                window.create('src/renderer/add.html', 360, 240);
                 tray.destroy();
             },
         },

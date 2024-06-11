@@ -3,16 +3,28 @@
   "description": "UI for SSHFS",
   "version": "0.1.0",
   "scripts": {
-    "start": "electron src",
-    "test": "node */**.test.js"
+    "start": "electron-forge start",
+    "test": "node */**.test.js",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "type": "module",
+  "main": "src",
   "license": "MIT",
   "devDependencies": {
+    "@electron-forge/cli": "^7.4.0",
+    "@electron-forge/maker-deb": "^7.4.0",
+    "@electron-forge/maker-rpm": "^7.4.0",
+    "@electron-forge/maker-squirrel": "^7.4.0",
+    "@electron-forge/maker-zip": "^7.4.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
+    "@electron-forge/plugin-fuses": "^7.4.0",
+    "@electron/fuses": "^1.8.0",
     "electron": "^30.0.3"
   },
   "dependencies": {
     "command-exists": "^1.2.9",
+    "electron-squirrel-startup": "^1.0.1",
     "untildify": "^5.0.0"
   }
 }
