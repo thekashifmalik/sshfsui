@@ -26,9 +26,10 @@ function main() {
     createTray(targets);
     ipcMain.on('add', (event, data) => {
         config.addTarget(data.name, data.url, data.mount);
+    });
+    app.on('window-all-closed', () => {
         createTray(config.fetchOrCreateEmptyConfig());
     });
-    app.on('window-all-closed', () => {});
 }
 
 function createWindow(file) {
