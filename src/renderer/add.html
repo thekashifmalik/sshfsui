@@ -3,17 +3,22 @@
 
 <head>
     <meta charset="UTF-8" />
-    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'" />
-    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'" />
     <title>Add target</title>
+    <link rel="stylesheet" href="add.css">
 </head>
 
 <body>
     <form id="add">
+        <label for="name">Target Name:</label>
         <input required type="text" name="name">
+        <br>
+        <label for="name">Target URL:</label>
         <input required type="url" name="url">
+        <br>
+        <label for="name">Mount Path:</label>
         <input required type="text" name="mount">
+        <br>
         <input type="submit">
     </form>
 </body>
