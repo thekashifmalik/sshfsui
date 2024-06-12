@@ -1,6 +1,5 @@
 
-import * as path from 'path';
-
+import fixPath from 'fix-path';
 import { app, Tray, Menu, nativeImage, ipcMain } from 'electron'
 import * as commandExists from 'command-exists';
 
@@ -12,6 +11,7 @@ app.whenReady().then(main);
 
 
 function main() {
+    fixPath();
     if (!commandExists.sync('ssh')) {
         window.create('src/error-ssh.html', 640, 360);
         return;
