@@ -31,9 +31,10 @@ function main() {
 }
 
 function createTray(targets) {
-    const icon = nativeImage.createFromPath('assets/tray.png');
-    const iconDisconnected = nativeImage.createFromPath('assets/disconnected.png');
-    const iconConnected = nativeImage.createFromPath('assets/connected.png');
+    const appPath = app.getAppPath();
+    const icon = nativeImage.createFromPath(appPath + '/assets/tray.png');
+    const iconDisconnected = nativeImage.createFromPath(appPath + '/assets/disconnected.png');
+    const iconConnected = nativeImage.createFromPath(appPath + '/assets/connected.png');
     const tray = new Tray(icon);
 
     var items = [
