@@ -1,3 +1,4 @@
+import * as child_process from "child_process";
 
 import fixPath from 'fix-path';
 import { app, Tray, Menu, nativeImage, ipcMain } from 'electron'
@@ -56,6 +57,12 @@ function createTray(targets) {
                         target.status() ? target.disconnect() : target.connect();
                         createTray(targets);
                         tray.destroy();
+                    },
+                },
+                {
+                    label: 'Open Folder',
+                    click: () => {
+                        child_process.execSync('open ' + target.mount);
                     },
                 },
                 {
