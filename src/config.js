@@ -3,6 +3,7 @@ import fs from "fs";
 import * as child_process from "child_process";
 import path from "path";
 import untildify from "untildify";
+import * as sudo from "sudo-prompt";
 
 const configDir = os.homedir() + '/.sshfsui'
 
@@ -21,10 +22,6 @@ class Target {
         return foundURL || foundMount;
     }
     connect() {
-        const absolutePath = untildify(this.mount);
-        if (!fs.existsSync(absolutePath)) {
-            fs.mkdirSync(absolutePath);
-        }
         child_process.execSync(`sshfs ${this.url} ${this.mount}`);
     }
     disconnect() {
@@ -68,6 +65,23 @@ export function addTarget(name, url, mount) {
     fs.mkdirSync(targetBase);
     fs.writeFileSync(targetBase + "/target", url, { encoding: 'utf8' });
     fs.writeFileSync(targetBase + "/mount", mount, { encoding: 'utf8' });
+
+    const absolutePath = untildify(mount);
+    if (!fs.existsSync(absolutePath)) {
+        try {
+            fs.mkdirSync(absolutePath);
+        } catch (error) {
+            // This is the error code for permissions error.
+            if (error.errno === -13) {
+                sudo.exec('mkdir ' + absolutePath, { name: 'sshfs' }, (e, stdout, stderr) => {
+                    if (!e) {
+                        const username = os.userInfo().username
+                        sudo.exec(`chown ${username}:${username} ${absolutePath}`, { name: 'sshfs' }, (e, stdout, stderr) => {});
+                    }
+                });
+            }
+        }
+    }
 }
 
 

@@ -1,7 +1,7 @@
 {
   "name": "sshfsui",
   "description": "UI for SSHFS",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "scripts": {
     "start": "electron-forge start",
     "test": "node */**.test.js",
@@ -27,6 +27,7 @@
     "command-exists": "^1.2.9",
     "electron-squirrel-startup": "^1.0.1",
     "fix-path": "^4.0.0",
+    "sudo-prompt": "^9.2.1",
     "untildify": "^5.0.0"
   }
 }
