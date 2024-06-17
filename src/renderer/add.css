@@ -1,0 +1,28 @@
+body {
+    font-family: sans-serif;
+    font-size: small;
+}
+
+form {
+    width: 90%;
+    margin: 0 auto;
+}
+
+label,
+input {
+    display: inline-block;
+}
+
+label {
+    width: 30%;
+    text-align: right;
+}
+
+label+input {
+    width: 46%;
+    margin: 0 10% 2% 4%;
+}
+
+input+input {
+    float: right;
+}

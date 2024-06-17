@@ -82,7 +82,7 @@ function createTray(targets) {
         {
             label: 'Add',
             click: () => {
-                window.create('src/renderer/add.html', 360, 240);
+                window.create('src/renderer/add.html', 360, 120);
                 tray.destroy();
             },
         },

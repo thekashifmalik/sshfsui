@@ -3,23 +3,20 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'" />
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self';">
     <title>Add target</title>
     <link rel="stylesheet" href="add.css">
 </head>
 
 <body>
     <form id="add">
-        <label for="name">Target Name:</label>
+        <label for="name">Name:</label>
         <input required type="text" name="name">
-        <br>
         <label for="name">Target URL:</label>
         <input required type="url" name="url">
-        <br>
         <label for="name">Mount Path:</label>
         <input required type="text" name="mount">
-        <br>
-        <input type="submit">
+        <input type="submit" value="Add">
     </form>
 </body>
 
