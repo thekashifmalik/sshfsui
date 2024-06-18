@@ -1,0 +1,20 @@
+name: CD
+on:
+  workflow_run:
+    workflows:
+    - CI
+    branches:
+    - master
+    types:
+    - completed
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '21.7.2'
+      - run: yarn install
+      - run: yarn make
