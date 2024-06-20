@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self';">
+    <title>Edit target</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <form id="edit">
+        <label for="name">Name:</label>
+        <input required type="text" name="name">
+
+        <label for="url">Target URL:</label>
+        <input required type="url" name="url">
+
+        <label for="mount">Mount Path:</label>
+        <input required type="text" name="mount">
+
+        <input type="submit" value="Edit">
+    </form>
+</body>
+
+<script src="edit.js"></script>
+</html>

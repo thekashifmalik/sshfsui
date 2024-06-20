@@ -24,6 +24,10 @@ async function main() {
     ipcMain.on('add', (event, data) => {
         config.addTarget(data.name, data.url, data.mount);
     });
+    ipcMain.on('edit', (event, data) => {
+        config.deleteTarget(data.initialName);
+        config.addTarget(data.target.name, data.target.url, data.target.mount);
+    });
     app.on('window-all-closed', () => {
         createTray();
     });
@@ -66,6 +70,14 @@ function createTray() {
                     label: 'Open Folder',
                     click: () => {
                         child_process.execSync('open ' + target.mount);
+                    },
+                },
+                {
+                    label: 'Edit',
+                    enabled: !target.status(),
+                    click: () => {
+                        window.create('src/renderer/edit.html', 360, 160, target);
+                        tray.destroy();
                     },
                 },
                 {

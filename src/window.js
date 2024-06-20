@@ -8,7 +8,7 @@ const __dirname = import.meta.dirname;
 const preloadPath = path.join(__dirname, 'preload.js');
 
 
-export function create(file, width, height) {
+export function create(file, width, height, loadData) {
     const win = new electron.BrowserWindow({
         width: width,
         height: height,
@@ -20,6 +20,11 @@ export function create(file, width, height) {
     win.removeMenu();
     win.webContents.setWindowOpenHandler(openExternalAndDeny);
     win.loadFile(file);
+    if (loadData) {
+        win.webContents.once('did-finish-load', () => {
+            win.webContents.send('load', loadData);
+        });
+    }
 }
 
 
