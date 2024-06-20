@@ -2,7 +2,7 @@ import * as child_process from "child_process";
 
 import fixPath from 'fix-path';
 import { app, Tray, Menu, nativeImage, ipcMain } from 'electron'
-import * as commandExists from 'command-exists';
+import commandExists from 'command-exists';
 
 import * as config from './config.js';
 import * as window from './window.js';
@@ -11,15 +11,19 @@ import * as window from './window.js';
 app.whenReady().then(main);
 
 
-function main() {
+async function main() {
     fixPath();
-    if (!commandExists.sync('ssh')) {
+    try {
+        await commandExists('ssh');
+    } catch {
         window.create('src/error-ssh.html', 640, 360);
-        return;
+        return
     }
-    if (!commandExists.sync('sshfs')) {
+    try {
+        await commandExists('sshfs');
+    } catch {
         window.create('src/error-sshfs.html', 640, 360);
-        return;
+        return
     }
     const targets = config.fetchOrCreateEmptyConfig();
     createTray(targets);
@@ -39,7 +43,10 @@ function createTray(targets) {
     const tray = new Tray(icon);
 
     var items = [
-        { label: 'SSHFS UI', enabled: false },
+        {
+            label: 'SSHFS UI',
+            enabled: false,
+        },
         { type: 'separator' },
     ];
     for (const target of targets) {
