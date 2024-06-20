@@ -15,14 +15,9 @@ async function main() {
     fixPath();
     try {
         await commandExists('ssh');
-    } catch {
-        window.create('src/error-ssh.html', 640, 360);
-        return
-    }
-    try {
         await commandExists('sshfs');
     } catch {
-        window.create('src/error-sshfs.html', 640, 360);
+        window.create('src/renderer/error.html', 320, 120);
         return
     }
     const targets = config.fetchOrCreateEmptyConfig();

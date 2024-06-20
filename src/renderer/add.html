@@ -5,17 +5,20 @@
     <meta charset="UTF-8" />
     <meta http-equiv="Content-Security-Policy" content="script-src 'self';">
     <title>Add target</title>
-    <link rel="stylesheet" href="add.css">
+    <link rel="stylesheet" href="index.css">
 </head>
 
 <body>
     <form id="add">
         <label for="name">Name:</label>
         <input required type="text" name="name">
-        <label for="name">Target URL:</label>
+
+        <label for="url">Target URL:</label>
         <input required type="url" name="url">
-        <label for="name">Mount Path:</label>
+
+        <label for="mount">Mount Path:</label>
         <input required type="text" name="mount">
+
         <input type="submit" value="Add">
     </form>
 </body>
