@@ -20,17 +20,16 @@ async function main() {
         window.create('src/renderer/error.html', 320, 120);
         return
     }
-    const targets = config.fetchOrCreateEmptyConfig();
-    createTray(targets);
+    createTray();
     ipcMain.on('add', (event, data) => {
         config.addTarget(data.name, data.url, data.mount);
     });
     app.on('window-all-closed', () => {
-        createTray(config.fetchOrCreateEmptyConfig());
+        createTray();
     });
 }
 
-function createTray(targets) {
+function createTray() {
     const appPath = app.getAppPath();
     const icon = nativeImage.createFromPath(appPath + '/assets/tray.png');
     const iconDisconnected = nativeImage.createFromPath(appPath + '/assets/disconnected.png');
@@ -44,6 +43,8 @@ function createTray(targets) {
         },
         { type: 'separator' },
     ];
+
+    const targets = config.fetchOrCreateEmptyConfig();
     for (const target of targets) {
         items.push({
             label: target.name,
@@ -57,7 +58,7 @@ function createTray(targets) {
                     label: target.status() ? 'Disconnect' : 'Connect',
                     click: () => {
                         target.status() ? target.disconnect() : target.connect();
-                        createTray(targets);
+                        createTray();
                         tray.destroy();
                     },
                 },
@@ -71,7 +72,7 @@ function createTray(targets) {
                     label: 'Delete',
                     click: () => {
                         config.deleteTarget(target.name);
-                        createTray(config.fetchOrCreateEmptyConfig())
+                        createTray();
                         tray.destroy();
                     },
                 },
