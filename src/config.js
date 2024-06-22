@@ -27,6 +27,9 @@ class Target {
     }
 
     async connect() {
+        const parts = this.url.split(':');
+        const host = parts[0];
+        await exec(`timeout 3 ssh ${host} echo ping`);
         try {
             await exec(`sshfs ${this.url} ${this.mount}`, { timeout: 3000 });
         } catch (e) {
