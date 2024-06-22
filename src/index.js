@@ -17,10 +17,10 @@ async function main() {
         await commandExists('ssh');
         await commandExists('sshfs');
     } catch {
-        window.create('src/renderer/error.html', 320, 120);
+        await window.create('src/renderer/error.html', 320, 120);
         return
     }
-    createTray();
+    await createTray();
     ipcMain.on('add', (event, data) => {
         config.addTarget(data.name, data.url, data.mount);
     });
@@ -28,12 +28,10 @@ async function main() {
         config.deleteTarget(data.initialName);
         config.addTarget(data.target.name, data.target.url, data.target.mount);
     });
-    app.on('window-all-closed', () => {
-        createTray();
-    });
+    app.on('window-all-closed', createTray);
 }
 
-function createTray() {
+async function createTray() {
     const appPath = app.getAppPath();
     const icon = nativeImage.createFromPath(appPath + '/assets/tray.png');
     const iconDisconnected = nativeImage.createFromPath(appPath + '/assets/disconnected.png');
@@ -75,8 +73,8 @@ function createTray() {
                 {
                     label: 'Edit',
                     enabled: !target.status(),
-                    click: () => {
-                        window.create('src/renderer/edit.html', 360, 160, target);
+                    click: async () => {
+                        await window.create('src/renderer/edit.html', 360, 160, target);
                         tray.destroy();
                     },
                 },
@@ -96,8 +94,8 @@ function createTray() {
         { type: 'separator' },
         {
             label: 'Add',
-            click: () => {
-                window.create('src/renderer/add.html', 360, 160);
+            click: async () => {
+                await window.create('src/renderer/add.html', 360, 160);
                 tray.destroy();
             },
         },
