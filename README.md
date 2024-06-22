@@ -9,7 +9,7 @@ these targets.
 
 
 ## Installation
-Download the right installer for your OS and Architecture from [Github](https://github.com/thekashifmalik/sshfsui/releases).
+Download and run the installer for your OS and Architecture from [Github](https://github.com/thekashifmalik/sshfsui/releases/latest).
 
 > **Note**: This software is not yet stable; there may be backwards-incompatible changes before v1. Use at your own
 > risk.
