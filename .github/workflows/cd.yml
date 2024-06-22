@@ -18,15 +18,9 @@ jobs:
         run: gh release create v`node -p "require('./package.json').version"` --notes ''
 
 
-  upload-binary:
+  upload-binary-ubuntu:
     needs: create-release
-    strategy:
-      fail-fast: false
-      matrix:
-        os:
-          - ubuntu-latest
-          - macos-latest
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -36,4 +30,19 @@ jobs:
       - run: yarn make
       - env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload v`node -p "require('./package.json').version"` `ls out/make/*/*/*`
+        run: gh release upload v`node -p "require('./package.json').version"` out/make/*/*/*.deb
+
+
+  upload-binary-macos:
+    needs: create-release
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '21.7.2'
+      - run: yarn install
+      - run: yarn make
+      - env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload v`node -p "require('./package.json').version"` out/make/*.dmg
