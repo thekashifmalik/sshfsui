@@ -1,9 +1,12 @@
 import os from "os";
 import fs from "fs";
+import util from "util";
 import * as child_process from "child_process";
 import path from "path";
 import untildify from "untildify";
 import * as sudo from "sudo-prompt";
+
+const exec = util.promisify(child_process.exec)
 
 const configDir = os.homedir() + '/.sshfsui'
 
@@ -15,17 +18,17 @@ class Target {
         this.mount = mount;
     }
 
-    status() {
-        const output = child_process.execSync('mount').toString();
-        const foundURL = output.indexOf(this.url) !== -1;
-        const foundMount = output.indexOf(this.mount) !== -1;
+    async status() {
+        const { stdout } = await exec('mount');
+        const foundURL = stdout.indexOf(this.url) !== -1;
+        const foundMount = stdout.indexOf(this.mount) !== -1;
         return foundURL || foundMount;
     }
-    connect() {
-        child_process.execSync(`sshfs ${this.url} ${this.mount}`);
+    async connect() {
+        await exec(`sshfs ${this.url} ${this.mount}`);
     }
-    disconnect() {
-        child_process.execSync(`umount ${this.mount}`);
+    async disconnect() {
+        await exec(`umount ${this.mount}`);
     }
 }
 

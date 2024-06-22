@@ -52,15 +52,15 @@ async function createTray() {
             label: target.name,
             submenu: [
                 {
-                    icon: target.status() ? iconConnected : iconDisconnected,
+                    icon: await target.status() ? iconConnected : iconDisconnected,
                     label: 'Status',
                     enabled: false,
                 },
                 {
-                    label: target.status() ? 'Disconnect' : 'Connect',
-                    click: () => {
-                        target.status() ? target.disconnect() : target.connect();
-                        createTray();
+                    label: await target.status() ? 'Disconnect' : 'Connect',
+                    click: async () => {
+                        await target.status() ? await target.disconnect() : await target.connect();
+                        await createTray();
                         tray.destroy();
                     },
                 },
@@ -72,7 +72,7 @@ async function createTray() {
                 },
                 {
                     label: 'Edit',
-                    enabled: !target.status(),
+                    enabled: !await target.status(),
                     click: async () => {
                         await window.create('src/renderer/edit.html', 360, 160, target);
                         tray.destroy();
@@ -80,9 +80,9 @@ async function createTray() {
                 },
                 {
                     label: 'Delete',
-                    click: () => {
+                    click: async () => {
                         config.deleteTarget(target.name);
-                        createTray();
+                        await createTray();
                         tray.destroy();
                     },
                 },
