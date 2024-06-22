@@ -17,7 +17,7 @@ async function main() {
         await commandExists('ssh');
         await commandExists('sshfs');
     } catch {
-        await window.create('src/renderer/error.html', 320, 120);
+        await window.create('src/renderer/error-sshfs.html', 320, 120);
         return
     }
     await createTray();
@@ -63,7 +63,13 @@ async function createTray() {
                         if (connected) {
                             await target.disconnect();
                         } else {
-                            await target.connect();
+                            try {
+                                await target.connect();
+                            } catch {
+                                await window.create('src/renderer/error-connect.html', 320, 120);
+                                tray.destroy();
+                                return;
+                            }
                         }
                         await createTray();
                         tray.destroy();

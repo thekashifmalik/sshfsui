@@ -25,14 +25,17 @@ class Target {
         const foundMount = stdout.indexOf(this.mount) !== -1;
         return foundURL || foundMount;
     }
+
     async connect() {
         try {
             await exec(`sshfs ${this.url} ${this.mount}`, { timeout: 3000 });
-        } catch {
+        } catch (e) {
             await this.cleanupSSHFS();
             await this.disconnect();
+            throw e;
         }
     }
+
     async cleanupSSHFS() {
         const { stdout } = await exec(`ps aux | grep sshfs`)
         const lines = stdout.split('\n');
