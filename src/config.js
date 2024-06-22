@@ -5,6 +5,7 @@ import * as child_process from "child_process";
 import path from "path";
 import untildify from "untildify";
 import * as sudo from "sudo-prompt";
+import { kill } from "process";
 
 const exec = util.promisify(child_process.exec)
 
@@ -25,8 +26,26 @@ class Target {
         return foundURL || foundMount;
     }
     async connect() {
-        await exec(`sshfs ${this.url} ${this.mount}`);
+        try {
+            await exec(`sshfs ${this.url} ${this.mount}`, { timeout: 3000 });
+        } catch {
+            await this.cleanupSSHFS();
+            await this.disconnect();
+        }
     }
+    async cleanupSSHFS() {
+        const { stdout } = await exec(`ps aux | grep sshfs`)
+        const lines = stdout.split('\n');
+        const filteredGrep = lines.filter(l => !l.includes('grep '));
+        const filteredURLs = filteredGrep.filter(l => l.includes(this.url));
+        const absoluteMount = untildify(this.mount);
+        const filteredMount = filteredURLs.filter(l => l.includes(absoluteMount));
+        const line = filteredMount[0];
+        const parts = line.split(' ');
+        const pid = parts[1];
+        kill(pid, 'SIGKILL');
+    }
+
     async disconnect() {
         await exec(`umount ${this.mount}`);
     }

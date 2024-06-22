@@ -59,7 +59,12 @@ async function createTray() {
                 {
                     label: await target.status() ? 'Disconnect' : 'Connect',
                     click: async () => {
-                        await target.status() ? await target.disconnect() : await target.connect();
+                        const connected = await target.status();
+                        if (connected) {
+                            await target.disconnect();
+                        } else {
+                            await target.connect();
+                        }
                         await createTray();
                         tray.destroy();
                     },
