@@ -5,7 +5,7 @@ Straightforward UI to manage your SSHFS mounts.
 `sshfsui` is a mostly tray-based program. It can create SSHFS mount targets, connect & disconnect to them and delete
 these targets.
 
-![screenshot](screenshot.png)
+![screenshot](docs/screenshot.png)
 
 
 ## Installation
@@ -22,3 +22,7 @@ xattr -c /Applications/sshfsui.app
 ```
 
 This is needed since this application has not yet been signed via the Apple Developer Program.
+
+If you attempt to start the application without running this command you will see the following error:
+
+![screenshot-macos-error](docs/screenshot-macos-error.png)
