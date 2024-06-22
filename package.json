@@ -1,7 +1,7 @@
 {
   "name": "sshfsui",
   "description": "UI for SSHFS",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "scripts": {
     "start": "electron-forge start",
     "test": "node */**.test.js",
