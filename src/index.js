@@ -18,7 +18,7 @@ async function main() {
         await commandExists('sshfs');
     } catch {
         await window.create('src/renderer/error-sshfs.html', 320, 120);
-        return
+        return;
     }
     await createTray();
     ipcMain.on('add', (event, data) => {
