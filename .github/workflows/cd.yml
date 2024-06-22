@@ -21,6 +21,7 @@ jobs:
   upload-binary:
     needs: create-release
     strategy:
+      fail-fast: false
       matrix:
         os:
           - ubuntu-latest
@@ -35,4 +36,4 @@ jobs:
       - run: yarn make
       - env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload v`node -p "require('./package.json').version"` out/make/*/*/*
+        run: gh release upload v`node -p "require('./package.json').version"` `ls out/make/*/*/*`
