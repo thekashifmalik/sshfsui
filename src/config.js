@@ -27,10 +27,18 @@ class Target {
     }
 
     async connect() {
+        try {
+            await exec(`timeout 3 sshfs ${this.url} ${this.mount}`);
+        } catch (e) {
+            this.disconnect();
+            throw e;
+        }
+    }
+
+    async testSSH() {
         const parts = this.url.split(':');
         const host = parts[0];
         await exec(`timeout 3 ssh ${host} echo ping`);
-        await exec(`timeout 3 sshfs ${this.url} ${this.mount}`);
     }
 
     async cleanupSSHFS() {
