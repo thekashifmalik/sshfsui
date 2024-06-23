@@ -10,6 +10,7 @@ This is done using SSH and SSHFS under the hood.
 
 You can manage multiple targets. Each target has a name (needs to be file-safe) and related config:
 
+![screenshot](docs/screenshot-add.png)
 
 ## Installation
 Download and run the installer for your OS and Architecture from [Github](https://github.com/thekashifmalik/sshfsui/releases/latest).
