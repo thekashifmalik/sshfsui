@@ -27,6 +27,7 @@ class Target {
     }
 
     async connect() {
+        await this.testSSH();
         try {
             await exec(`timeout 3 sshfs ${this.url} ${this.mount}`);
         } catch (e) {
