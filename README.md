@@ -1,11 +1,14 @@
 # sshfsui
-Straightforward UI to manage your SSHFS mounts.
+UI to mount remote filesystems locally using SSHFS.
 
 ## Quickstart
-`sshfsui` is a mostly tray-based program. It can create SSHFS mount targets, connect & disconnect to them and delete
-these targets.
+`sshfsui` is a tray-based program. It can mount remote filesystems to local mount points which let's you interact with
+these remote filesytems as if they were local. All changes to files are synchronized transparently in both directions.
+This is done using SSH and SSHFS under the hood.
 
 ![screenshot](docs/screenshot.png)
+
+You can manage multiple targets. Each target has a name (needs to be file-safe) and related config:
 
 
 ## Installation
