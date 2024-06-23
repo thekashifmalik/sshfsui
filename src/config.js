@@ -31,7 +31,7 @@ class Target {
             await exec(`timeout 3 sshfs ${this.url} ${this.mount}`);
         } catch (e) {
             try {
-                this.disconnect();
+                await this.disconnect();
             } catch {
                 // We can ignore any errors disconnecting since this only needs to be done on MacOS; Linux seems to
                 // clean up after itself.
