@@ -30,13 +30,7 @@ class Target {
         const parts = this.url.split(':');
         const host = parts[0];
         await exec(`timeout 3 ssh ${host} echo ping`);
-        try {
-            await exec(`sshfs ${this.url} ${this.mount}`, { timeout: 3000 });
-        } catch (e) {
-            await this.cleanupSSHFS();
-            await this.disconnect();
-            throw e;
-        }
+        await exec(`timeout 3 sshfs ${this.url} ${this.mount}`);
     }
 
     async cleanupSSHFS() {
