@@ -18,6 +18,12 @@ Download and run the installer for your OS and Architecture from [Github](https:
 > **Note**: This software is not yet stable; there may be backwards-incompatible changes before v1. Use at your own
 > risk.
 
+### Prerequisites
+This software requires that the following are installed and configured:
+
+- SSH
+- SSHFS (via [FUSE](https://osxfuse.github.io/) for MacOS or apt for linux)
+
 ### MacOS instructions
 On MacOS you will need to run the following command before you can start the application:
 
