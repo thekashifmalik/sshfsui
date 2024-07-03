@@ -65,8 +65,8 @@ async function createTray() {
                         } else {
                             try {
                                 await target.connect();
-                            } catch {
-                                await window.create('src/renderer/error-connect.html', 320, 120);
+                            } catch (e) {
+                                await window.create('src/renderer/error.html', 320, 120, e.message);
                                 tray.destroy();
                                 return;
                             }
