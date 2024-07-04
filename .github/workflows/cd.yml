@@ -48,7 +48,7 @@ jobs:
       - run: security create-keychain -p actions build.keychain
       - run: security default-keychain -s build.keychain
       - run: security unlock-keychain -p actions build.keychain
-      - run: security import certificate.p12 -k build.keychain -T /usr/bin/codesign;
+      - run: security import certificate.p12 -P '' -k build.keychain -T /usr/bin/codesign;
       - run: 'security set-key-partition-list -S apple-tool:,apple: -s -k actions build.keychain'
       - run: rm -fr *.p12
       - run: yarn make
