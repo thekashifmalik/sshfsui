@@ -2,11 +2,14 @@ import * as child_process from "child_process";
 
 import fixPath from 'fix-path';
 import { app, Tray, Menu, nativeImage, ipcMain } from 'electron'
+import { promises as fs } from "fs";
 import commandExists from 'command-exists';
 
 import * as config from './config.js';
 import * as window from './window.js';
 
+
+const errorHTMLSSHFS = await fs.readFile('src/partials/error-sshfs.html', { encoding: 'utf8' });
 
 app.whenReady().then(main);
 
@@ -17,7 +20,7 @@ async function main() {
         await commandExists('ssh');
         await commandExists('sshfs');
     } catch {
-        await window.create('src/renderer/error-sshfs.html', 320, 120);
+        await window.create('src/renderer/error.html', 320, 120, errorHTMLSSHFS);
         return;
     }
     await createTray();
