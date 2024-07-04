@@ -25,8 +25,9 @@ Download and run the installer for your OS and Architecture from [Github](https:
 ### Prerequisites
 This software requires that the following are installed and configured:
 
-- SSH
-- SSHFS (via [FUSE](https://osxfuse.github.io/) for MacOS or apt for linux)
+- `ssh` (via [OpenSSH](https://formulae.brew.sh/formula/openssh) for MacOS or `apt` for linux)
+- `sshfs` (via [FUSE](https://osxfuse.github.io/) for MacOS or `apt` for linux)
+- `timeout` (via [coreutils](https://formulae.brew.sh/formula/coreutils) for MacOS)
 
 ### MacOS instructions
 On MacOS you will need to run the following command before you can start the application:
