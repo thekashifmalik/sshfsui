@@ -8,19 +8,20 @@ import commandExists from 'command-exists';
 import * as config from './config.js';
 import * as window from './window.js';
 
+const appPath = app.getAppPath();
 
-const errorHTMLSSHFS = await fs.readFile('src/partials/error-sshfs.html', { encoding: 'utf8' });
+const errorHTMLSSH = await fs.readFile(appPath + '/src/partials/error-ssh.html', { encoding: 'utf8' });
+const errorHTMLSSHFS = await fs.readFile(appPath + '/src/partials/error-sshfs.html', { encoding: 'utf8' });
+const errorHTMLTimeout = await fs.readFile(appPath + '/src/partials/error-timeout.html', { encoding: 'utf8' });
 
 app.whenReady().then(main);
 
 
 async function main() {
     fixPath();
-    try {
-        await commandExists('ssh');
-        await commandExists('sshfs');
-    } catch {
-        await window.create('src/renderer/error.html', 320, 120, errorHTMLSSHFS);
+    const error = await checkDependenciesAndMaybeReturnError();
+    if (error) {
+        await window.create('src/renderer/error.html', 320, 120, error);
         return;
     }
     await createTray();
@@ -34,8 +35,25 @@ async function main() {
     app.on('window-all-closed', createTray);
 }
 
+async function checkDependenciesAndMaybeReturnError() {
+    try {
+        await commandExists('ssh');
+    } catch {
+        return errorHTMLSSH;
+    }
+    try {
+        await commandExists('sshfs');
+    } catch {
+        return errorHTMLSSHFS;
+    }
+    try {
+        await commandExists('timeout');
+    } catch {
+        return errorHTMLTimeout;
+    }
+}
+
 async function createTray() {
-    const appPath = app.getAppPath();
     const icon = nativeImage.createFromPath(appPath + '/assets/tray.png');
     const iconDisconnected = nativeImage.createFromPath(appPath + '/assets/disconnected.png');
     const iconConnected = nativeImage.createFromPath(appPath + '/assets/connected.png');
