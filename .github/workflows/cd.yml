@@ -42,6 +42,16 @@ jobs:
         with:
           node-version: '21.7.2'
       - run: yarn install
+      - env:
+          CERTIFICATE_MACOS: ${{ secrets.CERTIFICATE_MACOS }}
+        run: |
+          echo $CERTIFICATE_MACOS | base64 --decode > certificate.p12
+          security create-keychain -p actions build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p actions build.keychain
+          security import certificate.p12 -k build.keychain -T /usr/bin/codesign;
+          security set-key-partition-list -S apple-tool:,apple: -s -k actions build.keychain
+          rm -fr *.p12
       - run: yarn make
       - env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
