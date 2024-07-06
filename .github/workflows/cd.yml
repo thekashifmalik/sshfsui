@@ -51,7 +51,11 @@ jobs:
       - run: security import certificate.p12 -P '' -k build.keychain -T /usr/bin/codesign;
       - run: 'security set-key-partition-list -S apple-tool:,apple: -s -k actions build.keychain'
       - run: rm -fr *.p12
-      - run: yarn make
+      - env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
+          TEAM_ID: ${{ secrets.TEAM_ID }}
+        run: yarn make
       - env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh release upload v`node -p "require('./package.json').version"` out/make/*.dmg
