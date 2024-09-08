@@ -21,7 +21,8 @@ class Target {
 
     async status() {
         const { stdout } = await exec('mount');
-        const foundURL = stdout.indexOf(this.url) !== -1;
+        const urlMatch = this.url + ' on';
+        const foundURL = stdout.indexOf(urlMatch) !== -1;
         const foundMount = stdout.indexOf(this.mount) !== -1;
         return foundURL || foundMount;
     }
