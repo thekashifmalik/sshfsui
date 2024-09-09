@@ -65,7 +65,7 @@ async function createTray() {
             enabled: false,
         },
         {
-            label: 'v' + process.env.npm_package_version,
+            label: 'v' + app.getVersion(),
             enabled: false,
         },
         { type: 'separator' },
