@@ -64,6 +64,10 @@ async function createTray() {
             label: 'SSHFS UI',
             enabled: false,
         },
+        {
+            label: 'v' + process.env.npm_package_version,
+            enabled: false,
+        },
         { type: 'separator' },
     ];
 
